@@ -23,6 +23,12 @@ def create_app(test_config=None):
                              'GET,PUT,POST,DELETE,OPTIONS')
         return response
 
+    @app.route('/', methods=['GET'])
+    def welcome():
+        return jsonify({
+            'success': True,
+            'message': 'Welcome'
+        })
     @app.route('/movies', methods=['GET'])
     @requires_auth(permission='get:movies')
     def get_movies():

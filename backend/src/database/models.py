@@ -3,10 +3,13 @@ from sqlalchemy import create_engine
 from flask_sqlalchemy import SQLAlchemy
 import json
 from .test_database_setup import MOVIES, ACTORS
+import os
 
 database_name = "castingagency"
-database_path = "postgresql://postgres@{}/{}".format(
-    'localhost:5432', database_name)
+
+#default path: postgresql://postgres@localhost:5432/castingagency
+database_path = os.environ.get("DATABASE_URL", "postgresql://postgres@{}/{}".format(
+    'localhost:5432', database_name))
 
 db = SQLAlchemy()
 
