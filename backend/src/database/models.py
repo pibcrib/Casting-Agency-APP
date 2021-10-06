@@ -8,8 +8,9 @@ import os
 database_name = "castingagency"
 
 #default path: postgresql://postgres@localhost:5432/castingagency
-database_path = os.environ.get("DATABASE_URL", "postgresql://postgres@{}/{}".format(
-    'localhost:5432', database_name))
+#database_path = os.environ.get("DATABASE_URL", "postgresql://postgres@{}/{}".format('localhost:5432', database_name))
+
+database_path = "postgresql://rzgycskfuglwnp:8ad0e6c8ec5f339f1eda0de9015446930f742236fb019509455f9dfb3f2958eb@ec2-44-193-150-214.compute-1.amazonaws.com:5432/dfk5qivnqiqkh1"
 
 db = SQLAlchemy()
 
