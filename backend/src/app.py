@@ -1,5 +1,5 @@
 import os
-from flask import Flask, request, abort, jsonify
+from flask import Flask, request, abort, jsonify, redirect
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 
@@ -29,6 +29,11 @@ def create_app(test_config=None):
             'success': True,
             'message': 'Welcome'
         })
+
+    @app.route('/login', methods=['GET'])
+    def login():
+        return redirect('https://pibcrib.us.auth0.com/authorize?audience=CastingAgency&response_type=token&client_id=jerWZMmUrHOdpTSuloIr7IIX9QyUq7n7&redirect_uri=https://casting-agency-pib.herokuapp.com/')
+
     @app.route('/movies', methods=['GET'])
     @requires_auth(permission='get:movies')
     def get_movies():
