@@ -37,8 +37,6 @@ def create_app(test_config=None):
         AUTH0_CALLBACK_URL = os.environ.get('AUTH0_CALLBACK_URL')
 
         login_url = f'https://{AUTH0_DOMAIN}/authorize?audience={API_AUDIENCE}&response_type=token&client_id={AUTH0_CLIENT_ID}&redirect_uri={AUTH0_CALLBACK_URL}'
-
-        print(login_url)
         return redirect(login_url)
 
     @app.route('/movies', methods=['GET'])
@@ -180,11 +178,18 @@ def create_app(test_config=None):
     @requires_auth(permission='delete:movies')
     def delete_movie(movie_id):
         movie = Movie.query.get(movie_id)
+        actors = Actor.query.filter(Actor.movie_id == movie_id).all()
 
         if not movie:
             abort(404)
 
         try:
+            #erases movie_id attribute for actors currently assigned to the movie being deleted
+            if actors:
+                for actor in actors:
+                    actor.movie_id = None
+                    actor.update()
+
             movie.delete()
             return jsonify({
                 'success': True,

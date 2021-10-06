@@ -115,6 +115,6 @@ class Actor(db.Model):
             'name': self.name,
             'age': self.age,
             'gender': self.gender,
-            'current_movie': self.movie.title,
-            'current_movie_id': self.movie.id
+            'current_movie': self.movie.title if self.movie_id else None,   #returns none if actor is not assigned to a movie
+            'current_movie_id': self.movie.id if self.movie_id else None    #returns none if actor is not assigned to a movie
         }
