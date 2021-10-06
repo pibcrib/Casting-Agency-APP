@@ -275,7 +275,9 @@ Each time you open a new terminal session, run:
 export FLASK_DEBUG=true;
 export DATABASE_URL=URI;
 ```
-where URI is equal to the value of you local database's path. See `Setting Up Local Database - Integrating SQL Database` section for more details.
+where URI is equal to the value of you local database's path (See `Setting Up Local Database - Integrating SQL Database` section for more details.)
+
+If running the server for the first time, you can uncomment line 17 in `backend/src/app.py` before executing the script to populate the database with dummy data. Comment out this line again after the first time you run the server.
 
 To run the server, from within `./src` execute:
 
