@@ -6,6 +6,7 @@ The following project was done to fulfill the capstone project requirements for 
 ## Overview
 The following project models the backend of a web application for a Casting Agency Company. The Casting Agency API models a company that is responsible for creating movies, and managing and assigning actors to those movies. The backend streamlines this process buy providing API endpoints to create movies and actors, updates their respective information, and to delete selected resources.
 
+### Hosting
 This web application is currently hosted at https://casting-agency-pib.herokuapp.com/ . As of yet, there is no front-end for this application. To access endpoints, it is recommend that users utilize curl requests or Postman. Authentication tokens for the various roles needed to access the API's endpoints can be found in setup.sh. If the file is not included (likely because it is listed in .gitignore) or the tokens are expired, feel free to reach out to the developer (email: pibcrib@gmail.com).
 
 ## Main Files: Project Structure
@@ -228,24 +229,74 @@ DELETE '/actors/${actor_id}'
     }
 ```
 
-
-
-
-Project dependencies, local development and hosting instructions,
-Detailed instructions for scripts to install any project dependencies, and to run the development server.
-Setup environment variables in setup.sh for heroku
-
-
 ## Instructions for Local Development
 
 ### Installing Dependencies
 #### Python 3.9.7
-The application's backend was written exclusively in Python, using Pythion 3.9.7 during development. Follow instructions to install the latest version of python for your platform in the [python docs](https://docs.python.org/3/using/unix.html#getting-and-installing-the-latest-version-of-python)
-#### Key Dependencies
+The application's backend was written exclusively in Python, using Pythion 3.9.7 during development. It is recommend that this same Python version is used in development when testing or modifying the above project. Follow instructions to install the latest version of python for your platform in the [python docs](https://docs.python.org/3/using/unix.html#getting-and-installing-the-latest-version-of-python)
+
+#### Virtual environment
+When running application locally, it is recommend that a virtual environment is used to isolate the project's dependencies from other projects and your system's environment.
+
+Instructions for setting up a virtual environment for your platform can be found in the [python docs](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/)
+
+#### PIP Dependencies
+Once you have a virtual environment setup and running (or you're feeling bold and ignored that step), install dependencies by navigating to the root folder of this project directory, `/Capstone`, and running:
+
+```bash
+pip install -r requirements.txt
+```
+
+This will install all of the required packages listed in the `requirements.txt` file.
+
+###### Key Python Dependencies
 - [Flask](http://flask.pocoo.org/) is a lightweight backend microservices framework. Flask is required to handle requests and responses.
 
-- [SQLAlchemy](https://www.sqlalchemy.org/) and [Flask-SQLAlchemy](https://flask-sqlalchemy.palletsprojects.com/en/2.x/) are libraries to handle the lightweight sqlite database. Since we want you to focus on auth, we handle the heavy lift for you in `./src/database/models.py`. We recommend skimming this code first so you know how to interface with the Drink model.
+- [SQLAlchemy](https://www.sqlalchemy.org/) and [Flask-SQLAlchemy](https://flask-sqlalchemy.palletsprojects.com/en/2.x/) are libraries used to handle the lightweight Postgres database for the API.
 
-- [jose](https://python-jose.readthedocs.io/en/latest/) JavaScript Object Signing and Encryption for JWTs. Useful for encoding, decoding, and verifying JWTS.
+- [jose](https://python-jose.readthedocs.io/en/latest/) JavaScript Object Signing and Encryption for JWTs. Useful for encoding, decoding, and verifying JWTS, and utilized in the project to authenticate users before use of endpoints.  
 
-  python 3.9.7
+### Setting Up Local Database
+#### PostgreSQL
+The project is currently built to interface with a PostgreSQL database by default. Though databases using other SQL dialects can be used, it is recommend that you use a PostgreSQL database in development and production. Instructions for downloading and getting started with PostgreSQL can be found in the [PostgreSQL docs](https://www.postgresql.org/docs/).
+
+
+#### Integrating SQL Database
+By default, in `/backend/database/models.py` line 10, the database path for API is set to `postgres://postgres@localhost:5432/castingagency`. This value however can be overwritten by setting an environment variable `DATABASE_URL` with the value of your respective uri of your sql databse.
+
+Once you have created a database for the application, PostgreSQL or otherwise, and before you run the server, it is highly recommend that you open a terminal session and set a variable `DATABASE_URL` equal to the uri of your database, rather than modify the code in `models.py`. THE VARIABLE MUST HAVE THIS EXACT NAME IN ORDER TO FUNCTION!
+
+### Running Development Server
+From within the `./src` directory first ensure you are working using your created virtual environment.
+
+Each time you open a new terminal session, run:
+
+```bash
+export FLASK_DEBUG=true;
+export DATABASE_URL=URI;
+```
+where URI is equal to the value of you local database's path. See `Setting Up Local Database - Integrating SQL Database` section for more details.
+
+To run the server, from within `./src` execute:
+
+```bash
+python app.py
+```
+
+
+## Instruction for Running Tests
+Unit tests have been created to test the API's key endpoints, as well as any errors, in `/backend/src/test_app.py`. To execute the tests, it is first necessary to create a separate test database. Once you have done so, open a terminal session and run:
+
+```bash
+export DATABASE_URL_TEST=TEST_URI;
+export ASSITANT_TOKEN=token1
+export DIRECTOR_TOKEN=token2
+export PRODUCER_TOKEN=token3
+```
+where TEST_URI is equal to the value of your test databases' path, and token's 1 - 3 are respectively the AUTH0 tokens for the Assistant Director, Casting Director, and Executive Producer roles respectively. These tokens can be found in `setup.sh` or requested from the developer.
+
+Once the above environment variables have been set, from within the `/backend/src` directory, run the following:
+
+```bash
+python test_app.py
+```

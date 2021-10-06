@@ -15,8 +15,9 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.app = create_app()
         self.client = self.app.test_client
         self.database_name = "castingagency_test"
-        self.database_path = "postgresql://postgres@{}/{}".format(
+        self.default_path = "postgresql://postgres@{}/{}".format(
             'localhost:5432', self.database_name)
+        self.database_path = os.environ.get("DATABASE_URL_TEST", self.default_path).replace('postgres://', 'postgresql://')  #replacing since 'postgres' is deprecated
         setup_db(self.app, self.database_path)
 
         # binds the app to the current context

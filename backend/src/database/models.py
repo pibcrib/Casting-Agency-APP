@@ -7,9 +7,8 @@ import os
 
 database_name = "castingagency"
 
-local_path = f'postgres://postgres@localhost:5432/{database_name}' #local database path
-database_path = os.environ.get('DATABASE_URL', local_path).replace('postgres://', 'postgresql://')  #replacing since 'postgres' is deprecated
-
+default_path = f'postgres://postgres@localhost:5432/{database_name}' #local database path
+database_path = os.environ.get('DATABASE_URL', default_path).replace('postgres://', 'postgresql://')  #replacing since 'postgres' is deprecated
 db = SQLAlchemy()
 
 '''

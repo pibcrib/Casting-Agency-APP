@@ -3,7 +3,7 @@ from flask import Flask, request, abort, jsonify, redirect
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 
-from database.models import setup_db, Movie, Actor
+from database.models import setup_db, init_db_data, Movie, Actor
 from auth.auth import AuthError, requires_auth, AUTH0_DOMAIN, API_AUDIENCE
 
 
@@ -12,6 +12,9 @@ def create_app(test_config=None):
     app = Flask(__name__)
     setup_db(app)
     CORS(app)
+
+    #UNCOMMENT THE FOLLOWING LINE AND RUN ONCE TO INITIALIZE DATABASE WITH DUMMY DATA
+    #init_db_data()
 
     # Sets up CORS. Allows '*' for origins.
     # Uses after_request decorator to sets Access-Control-Allow
