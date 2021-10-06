@@ -17,9 +17,11 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.database_name = "castingagency_test"
         self.default_path = "postgresql://postgres@{}/{}".format(
             'localhost:5432', self.database_name)
+
+        # replacing since 'postgres' is deprecated
         self.database_path = os.environ.get(
             "DATABASE_URL_TEST", self.default_path).replace(
-            'postgres://', 'postgresql://')  # replacing since 'postgres' is deprecated
+            'postgres://', 'postgresql://')
         setup_db(self.app, self.database_path)
 
         # binds the app to the current context
@@ -301,7 +303,7 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertEqual(data['error'], 403)
         self.assertEqual(
             data['message']['description'],
-            'Access Forbidden. User is not allowed to access resource.')
+            'Access Forbidden. User not allowed to access resource.')
 
     def test_auth_error_update_actor(self):
         actor = Actor.query.get(2).format()
@@ -317,7 +319,7 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertEqual(data['error'], 403)
         self.assertEqual(
             data['message']['description'],
-            'Access Forbidden. User is not allowed to access resource.')
+            'Access Forbidden. User not allowed to access resource.')
 
     # tests for casting director role, should test for failure
     def test_auth_error_create_movie(self):
@@ -335,7 +337,7 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertEqual(data['error'], 403)
         self.assertEqual(
             data['message']['description'],
-            'Access Forbidden. User is not allowed to access resource.')
+            'Access Forbidden. User not allowed to access resource.')
 
     def test_auth_error_delete_movie(self):
         res = self.client().delete(
@@ -350,7 +352,7 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertEqual(data['error'], 403)
         self.assertEqual(
             data['message']['description'],
-            'Access Forbidden. User is not allowed to access resource.')
+            'Access Forbidden. User not allowed to access resource.')
 
     # tests for executive producer role, should test for success
     def test_auth_success_get_movie(self):

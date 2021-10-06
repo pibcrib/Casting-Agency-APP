@@ -5,7 +5,7 @@ from functools import wraps
 from jose import jwt
 from urllib.request import urlopen
 
-#global vars
+# Global Vars
 AUTH0_DOMAIN = os.environ.get('AUTH0_DOMAIN', 'pibcrib.us.auth0.com')
 API_AUDIENCE = os.environ.get('API_AUDIENCE', 'CastingAgency')
 ALGORITHMS = ['RS256']
@@ -42,13 +42,24 @@ def get_token_auth_header():
                 return token
             else:
                 raise AuthError(
-                    {'code': 'invalid_header', 'description': 'Authorization header does not contain Bearer token.'}, 401)
+                    {
+                        'code': 'invalid_header',
+                        'description':
+                            'Authorization header lacks Bearer token.'},
+                    401)
         else:
             raise AuthError(
-                {'code': 'invalid_header', 'description': 'Malformed Autorization header.'}, 401)
+                {
+                    'code': 'invalid_header',
+                    'description': 'Malformed Autorization header.'},
+                401)
 
-    raise AuthError({'code': 'invalid_header',
-                    'description': 'Authorization is not present in the request headers.'}, 401)
+    raise AuthError(
+        {
+            'code': 'invalid_header',
+            'description':
+                'Authorization is not present in the request headers.'},
+        401)
 
 
 #      check_permissions(permission, payload)
@@ -56,9 +67,10 @@ def get_token_auth_header():
 #               permission: string permission (i.e. 'post:drink')
 #               payload: decoded jwt payload
 #
-#           it should raise an AuthError if permissions are not included in the payload
-#           it should raise an AuthError if the requested permission string is not in the payload permissions array
-#           return true otherwise
+#           -raises an AuthError if permissions are not included in the payload
+#           -raises an AuthError if the requested permission string
+#               is not in the payload permissions array
+#           -return true otherwise
 def check_permissions(permission, payload):
     # gets list of permissions included in verified JWT payload
     payload_permissions = payload['permissions']
@@ -69,11 +81,20 @@ def check_permissions(permission, payload):
 
         # raises error if payload_permissions does not contain permission
         # needed to access resource
-        raise AuthError({'code': 'invalid_permission',
-                        'description': 'Access Forbidden. User is not allowed to access resource.'}, 403)
+        raise AuthError(
+            {
+                'code': 'invalid_permission',
+                'description':
+                    'Access Forbidden. User not allowed to access resource.'},
+            403)
 
-    raise AuthError({'code': 'invalid_permission',
-                    'description': 'No permission(s) were included in payload. User is not allowed to access resource.'}, 403)
+    raise AuthError(
+        {
+            'code': 'invalid_permission',
+            'description':
+                '''No permission(s) were included in payload.
+                User not allowed to access resource.'''},
+        403)
 
 
 #      verify_decode_jwt(token)
@@ -132,7 +153,8 @@ def verify_decode_jwt(token):
         except jwt.JWTClaimsError:
             raise AuthError({
                 'code': 'invalid_claims',
-                'description': 'Incorrect claims. Please, check the audience and issuer.'
+                'description':
+                    'Incorrect claims. Please, check the audience and issuer.'
             }, 401)
         except Exception:
             raise AuthError({
@@ -152,9 +174,9 @@ def verify_decode_jwt(token):
 #           @INPUTS
 #           permission: string permission (i.e. 'post:drink')
 #
-#           it should use the get_token_auth_header method to get the token
-#           it should use the verify_decode_jwt method to decode the jwt
-#           it should use the check_permissions method validate claims and check the requested permission
+#           uses  get_token_auth_header() to get the token
+#           uses verify_decode_jwt() to decode the jwt
+#           uses check_permissions() to validate claims and check permission
 # return the decorator which passes the decoded payload to the decorated
 # method
 def requires_auth(permission=''):
