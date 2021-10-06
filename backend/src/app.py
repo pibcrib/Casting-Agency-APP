@@ -4,7 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 
 from database.models import setup_db, Movie, Actor
-from auth.auth import AuthError, requires_auth
+from auth.auth import AuthError, requires_auth, AUTH0_DOMAIN, API_AUDIENCE
 
 
 def create_app(test_config=None):
@@ -32,7 +32,16 @@ def create_app(test_config=None):
 
     @app.route('/login', methods=['GET'])
     def login():
-        return redirect('https://pibcrib.us.auth0.com/authorize?audience=CastingAgency&response_type=token&client_id=jerWZMmUrHOdpTSuloIr7IIX9QyUq7n7&redirect_uri=https://casting-agency-pib.herokuapp.com/')
+        #endpoint to login to Auth0. Can create account but token returned wont have valid permissions to access endpoints
+        AUTH0_CLIENT_ID = os.environ.get('AUTH0_CLIENT_ID')
+        AUTH0_CALLBACK_URL = os.environ.get('AUTH0_CALLBACK_URL')
+
+        login_url = f'https://{AUTH0_DOMAIN}' +
+        f'/authorize?audience={API_AUDIENCE}' +
+        f'&response_type=token&client_id={AUTH0_CLIENT_ID}' +
+        f'&redirect_uri={AUTH0_CALLBACK_URL}'
+
+        return redirect(login_url)
 
     @app.route('/movies', methods=['GET'])
     @requires_auth(permission='get:movies')

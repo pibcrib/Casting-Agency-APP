@@ -1,14 +1,14 @@
 import json
+import os
 from flask import request, _request_ctx_stack
 from functools import wraps
 from jose import jwt
 from urllib.request import urlopen
 
-#*****CHANGE AUDIENCE
-AUTH0_DOMAIN = 'pibcrib.us.auth0.com'
+#global vars
+AUTH0_DOMAIN = os.environ.get('AUTH0_DOMAIN', 'pibcrib.us.auth0.com')
+API_AUDIENCE = os.environ.get('API_AUDIENCE', 'CastingAgency')
 ALGORITHMS = ['RS256']
-# ik coffee shop is spelled wrong here but it was too much of a hassle to remake the auth0 api so I rolled with it
-API_AUDIENCE = 'CastingAgency'
 
 
 # AuthError Exception
