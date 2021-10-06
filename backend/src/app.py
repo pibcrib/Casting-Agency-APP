@@ -13,8 +13,8 @@ def create_app(test_config=None):
     setup_db(app)
     CORS(app)
 
-    #UNCOMMENT THE FOLLOWING LINE AND RUN ONCE TO INITIALIZE DATABASE WITH DUMMY DATA
-    #init_db_data()
+    # UNCOMMENT THE FOLLOWING LINE AND RUN ONCE TO INITIALIZE DATABASE WITH DUMMY DATA
+    # init_db_data()
 
     # Sets up CORS. Allows '*' for origins.
     # Uses after_request decorator to sets Access-Control-Allow
@@ -35,7 +35,8 @@ def create_app(test_config=None):
 
     @app.route('/login', methods=['GET'])
     def login():
-        #endpoint to login to Auth0. Can create account but token returned wont have valid permissions to access endpoints
+        # endpoint to login to Auth0. Can create account but token returned
+        # wont have valid permissions to access endpoints
         AUTH0_CLIENT_ID = os.environ.get('AUTH0_CLIENT_ID')
         AUTH0_CALLBACK_URL = os.environ.get('AUTH0_CALLBACK_URL')
 
@@ -187,7 +188,8 @@ def create_app(test_config=None):
             abort(404)
 
         try:
-            #erases movie_id attribute for actors currently assigned to the movie being deleted
+            # erases movie_id attribute for actors currently assigned to the
+            # movie being deleted
             if actors:
                 for actor in actors:
                     actor.movie_id = None

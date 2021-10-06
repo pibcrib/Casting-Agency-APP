@@ -67,7 +67,8 @@ def check_permissions(permission, payload):
             if p == permission:
                 return True
 
-        # raises error if payload_permissions does not contain permission needed to access resource
+        # raises error if payload_permissions does not contain permission
+        # needed to access resource
         raise AuthError({'code': 'invalid_permission',
                         'description': 'Access Forbidden. User is not allowed to access resource.'}, 403)
 
@@ -85,7 +86,8 @@ def check_permissions(permission, payload):
 #           it should validate the claims
 #           return the decoded payload
 def verify_decode_jwt(token):
-    # Gets set of public keys used for verifying JWTs issued by Auth0, signed using RS256
+    # Gets set of public keys used for verifying JWTs issued by Auth0, signed
+    # using RS256
     jsonurl = urlopen(f'https://{AUTH0_DOMAIN}/.well-known/jwks.json')
     jwks = json.loads(jsonurl.read())
 
@@ -138,7 +140,8 @@ def verify_decode_jwt(token):
                 'description': 'Unable to parse authentication token.'
             }, 401)
 
-    # raises an error if the set of public keys does not have a key with KID that matches the token's KID
+    # raises an error if the set of public keys does not have a key with KID
+    # that matches the token's KID
     raise AuthError({
         'code': 'invalid_header',
         'description': 'Unable to find the appropriate key.'
@@ -152,7 +155,8 @@ def verify_decode_jwt(token):
 #           it should use the get_token_auth_header method to get the token
 #           it should use the verify_decode_jwt method to decode the jwt
 #           it should use the check_permissions method validate claims and check the requested permission
-#           return the decorator which passes the decoded payload to the decorated method
+# return the decorator which passes the decoded payload to the decorated
+# method
 def requires_auth(permission=''):
     def requires_auth_decorator(f):
         @wraps(f)

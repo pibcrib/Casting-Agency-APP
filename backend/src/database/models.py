@@ -7,14 +7,17 @@ import os
 
 database_name = "castingagency"
 
-default_path = f'postgres://postgres@localhost:5432/{database_name}' #local database path
-database_path = os.environ.get('DATABASE_URL', default_path).replace('postgres://', 'postgresql://')  #replacing since 'postgres' is deprecated
+# local database path
+default_path = f'postgres://postgres@localhost:5432/{database_name}'
+database_path = os.environ.get('DATABASE_URL', default_path).replace(
+    'postgres://', 'postgresql://')  # replacing since 'postgres' is deprecated
 db = SQLAlchemy()
 
 '''
 setup_db(app)
     binds a flask application and a SQLAlchemy service
 '''
+
 
 def setup_db(app, database_path=database_path):
     app.config["SQLALCHEMY_DATABASE_URI"] = database_path
@@ -23,7 +26,8 @@ def setup_db(app, database_path=database_path):
     db.init_app(app)
     db.create_all()
 
-# intializes databases with dummy data for testing purposes
+
+# init_db_data intializes databases with dummy data for testing purposes
 def init_db_data():
     db.drop_all()
     db.create_all()
@@ -45,7 +49,9 @@ def init_db_data():
         new_actor.movie_id = actor['movie_id']
         new_actor.insert()
 
-#MODELS
+
+# MODELS
+
 
 class Movie(db.Model):
     __tablename__ = 'Movie'
@@ -114,6 +120,8 @@ class Actor(db.Model):
             'name': self.name,
             'age': self.age,
             'gender': self.gender,
-            'current_movie': self.movie.title if self.movie_id else None,   #returns none if actor is not assigned to a movie
-            'current_movie_id': self.movie.id if self.movie_id else None    #returns none if actor is not assigned to a movie
+            # returns none if actor is not assigned to a movie
+            'current_movie': self.movie.title if self.movie_id else None,
+            # returns none if actor is not assigned to a movie
+            'current_movie_id': self.movie.id if self.movie_id else None
         }
