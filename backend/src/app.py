@@ -36,10 +36,10 @@ def create_app(test_config=None):
         AUTH0_CLIENT_ID = os.environ.get('AUTH0_CLIENT_ID')
         AUTH0_CALLBACK_URL = os.environ.get('AUTH0_CALLBACK_URL')
 
-        login_url = f'https://{AUTH0_DOMAIN}' +
-        f'/authorize?audience={API_AUDIENCE}' +
-        f'&response_type=token&client_id={AUTH0_CLIENT_ID}' +
-        f'&redirect_uri={AUTH0_CALLBACK_URL}'
+        login_url = f'''https://{AUTH0_DOMAIN}/
+            authorize?audience={API_AUDIENCE}
+            &response_type=token&client_id={AUTH0_CLIENT_ID}
+            &redirect_uri={AUTH0_CALLBACK_URL}'''
 
         return redirect(login_url)
 
